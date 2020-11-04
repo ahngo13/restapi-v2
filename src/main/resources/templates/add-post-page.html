@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 추가</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div th:if="${state == 'create'}">
+        <h1>게시글 추가</h1>
+        <div>
+            게시글 제목 : <input id="createTitle" placeholder="게시글 제목을 입력해주세요." type="text"><br/>
+            게시글 내용 : <textarea id="createContents" placeholder="게시글 내용을 입력해주세요."></textarea><br/>
+            <button onclick="createPost()">저장</button>
+        </div>
+    </div>
+    <div th:unless="${state == 'create'}">
+        <h1>게시글 수정</h1>
+        <div>
+            게시글 제목 : <input id="modifyTitle" th:value="${post.title}" placeholder="게시글 제목을 입력해주세요." type="text"><br/>
+            게시글 내용 : <textarea id="modifyContents" rows="20" cols="80" th:text="${post.contents}" placeholder="게시글 내용을 입력해주세요."></textarea><br/>
+            <button onclick="modifyPost()">수정</button>
+            <button onclick="deletePost()">삭제</button>
+            <input type="hidden" id="postId" th:value="${postId}">
+        </div>
+    </div>
+    <script>
+        const createPost=()=>{
+            const title = document.querySelector('#createTitle').value;
+            const contents = document.querySelector('#createContents').value;
+            const send_param = {
+                title,
+                contents
+            }
+             axios.post('http://localhost:8080/posts', send_param)
+                .then(function(response) {
+                  console.log(response);
+                  alert("저장 되었습니다!");
+                  location.href = "/posts";
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+        }
+
+        const modifyPost=()=>{
+            const title = document.querySelector('#modifyTitle').value;
+            const contents = document.querySelector('#modifyContents').value;
+            const postId = document.querySelector('#postId').value;
+            const send_param = {
+                title,
+                contents
+            }
+             axios.put('http://localhost:8080/posts/' + postId, send_param)
+                .then(function(response) {
+                  console.log(response);
+                  alert("수정 되었습니다!");
+                  location.href = "/posts";
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+        }
+
+        const deletePost=()=>{
+            const postId = document.querySelector('#postId').value;
+            const send_param = {
+                postId
+            }
+             axios.delete('http://localhost:8080/posts/' + postId, send_param)
+                .then(function(response) {
+                  console.log(response);
+                  alert("삭제 되었습니다!");
+                  location.href = "/posts";
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+        }
+    </script>
+</body>
+</html>

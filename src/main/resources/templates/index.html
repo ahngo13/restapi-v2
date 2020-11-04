@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 목록</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h1>게시글 목록</h1>
+    <table border="1">
+        <tr>
+            <td>게시글 번호</td>
+            <td>게시글 제목</td>
+        </tr>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.postId}" th:onclick="|javascript:modifyPostPage('${post.postId}')|"></td>
+            <td th:text="${post.title}" th:onclick="|javascript:modifyPostPage(${post.postId})|"></td>
+        </tr>
+    </table>
+    <button id="addPostPageBtn" onclick="addPostPage()">게시글 작성</button>
+    <script>
+        const addPostPage = () => {
+            location.href = "/posts/add-post-page";
+        }
+
+        const modifyPostPage = (postId) => {
+            location.href = "/posts/add-post-page?state=update&postId="+postId;
+        }
+    </script>
+</body>
+</html>

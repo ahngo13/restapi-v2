@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,8 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//RestController 어노테이션 추가 (controller 인식)
-@RestController
+//Controller 어노테이션 추가 (controller 인식)
+@Controller
 // value : localhost:8080/posts로 접근할 경우 이 controller에 접근한다.
 // produces : 생산 가능한 미디어 타입을 지정해서 일치할 때만 요청을 매칭함. (매핑 제한용)
 // comsumes : 소비 가능한 미디어 타입을 지정해서 때만 요청을 매칭함. (매핑 제한용)
@@ -40,9 +42,25 @@ public class PostController {
     //Get 요청이 들어왔을 때, value=""는 localhost:8080/posts를 의미함
     @GetMapping(value = "")
     //RequestParam : 넘어온 파라미터 가지고 올때 사용 required = false를 사용하면 필수값 아님을 의미
-    public List<Post> getPostList(@RequestParam(value = "postId", required = false) Long postId){
+    public String getPostList(@RequestParam(value = "postId", required = false) Long postId, Model model){
         List<Post> posts= postRepository.findAll();
-        return posts;
+        model.addAttribute("posts", posts);
+        return "index";
+    }
+
+    //게시글 추가/수정 페이지
+    @GetMapping(value = "/add-post-page")
+    public String getAddPostPage(@RequestParam(value = "state", required = false, defaultValue = "create")String state,
+                                 @RequestParam(value = "postId", required = false) Long postId, Model model){
+        if(state.equals("update")){
+            Post post = postRepository.findById(postId).get();
+            model.addAttribute("post", post);
+        }
+
+        model.addAttribute("state", state);
+        model.addAttribute("postId", postId);
+
+        return "add-post-page";
     }
 
     //특정 게시글 조회
