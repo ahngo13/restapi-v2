@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //Jpa 사용을 위한 어노테이션 추가
-@EnableAutoConfiguration
 @SpringBootApplication
 public class RestapiApplication {
 
