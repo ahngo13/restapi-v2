@@ -55,7 +55,7 @@
                 title,
                 contents
             }
-             axios.post('http://localhost:8080/posts', send_param)
+             axios.post('/posts', send_param)
                 .then(function(response) {
                   console.log(response);
                   alert("저장 되었습니다!");
@@ -75,7 +75,7 @@
                 title,
                 contents
             }
-             axios.put('http://localhost:8080/posts/' + postId, send_param)
+             axios.put('/posts/' + postId, send_param)
                 .then(function(response) {
                   console.log(response);
                   alert("수정 되었습니다!");
@@ -91,7 +91,7 @@
             const send_param = {
                 postId
             }
-             axios.delete('http://localhost:8080/posts/' + postId, send_param)
+             axios.delete('/posts/' + postId, send_param)
                 .then(function(response) {
                   console.log(response);
                   alert("삭제 되었습니다!");
